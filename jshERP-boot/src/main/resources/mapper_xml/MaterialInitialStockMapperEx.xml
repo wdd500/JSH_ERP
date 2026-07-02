@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsh.erp.datasource.mappers.MaterialInitialStockMapperEx">
+
+  <insert id="batchInsert" parameterType="java.util.List">
+      insert into jsh_material_initial_stock (material_id, depot_id, number)
+      values
+      <foreach collection="list" item="item" separator=",">
+        (#{item.materialId,jdbcType=BIGINT}, #{item.depotId,jdbcType=BIGINT},#{item.number,jdbcType=DECIMAL})
+      </foreach >
+  </insert>
+
+
+  <select id="getInitialStockMapByIdList" resultType="com.jsh.erp.datasource.entities.MaterialInitialStock">
+      select material_id, sum(number) number from jsh_material_initial_stock
+      where 1=1
+      and ifnull(delete_flag,'0') !='1'
+      and material_id in
+      <foreach collection="materialIdList" item="materialId" index="index" separator="," open="(" close=")">
+          #{materialId}
+      </foreach>
+      group by material_id
+  </select>
+
+  <select id="getListExceptZero" resultType="com.jsh.erp.datasource.entities.MaterialInitialStock">
+      select * from jsh_material_initial_stock where number!=0
+      and ifnull(delete_flag,'0') !='1'
+  </select>
+
+  <update id="batchDeleteByDepots">
+      update jsh_material_initial_stock
+      set delete_flag='1'
+      where 1=1
+      and depot_id in (
+      <foreach collection="ids" item="id" separator=",">
+        #{id}
+      </foreach>
+      )
+  </update>
+
+</mapper>
