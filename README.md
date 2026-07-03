@@ -1,4 +1,9 @@
 # 项目总述
+管伊佳ERP
+https://github.com/jishenghua/jshERP
+https://gitee.com/jishenghua/JSH_ERP
+开源说明请参照项目说明！
+
 最近在研究如何使用开源的ERP便于要地部署和外网访问，开源项目管伊佳ERP，研究了下windows下通过宝塔部署，有点复杂。
 在B站上学习了两个视频：
 
